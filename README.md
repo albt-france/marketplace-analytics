@@ -13,7 +13,7 @@ Analysis window: valid orders placed Jan 2017 - Jul 2018 (91,484 orders, 88,494 
 | 2 | Do late deliveries destroy ratings and repurchase? | Ratings, yes: **4.3 stars on time vs 2.2 late** (Mann-Whitney p < 0.001, bootstrap 95% CI of the gap 2.02-2.10). Late orders are **7%** of orders but **33%** of all 1-2 star reviews. Repurchase: the effect is **not detectable** (odds ratio 0.84, 95% CI 0.62-1.13), because only 2% of customers come back. |
 | 3 | Which sellers carry the marketplace, and which put it at risk? | **18%** of sellers make 80% of GMV; the top 10% make 67%. **32 big sellers** rate below 3.8 (6.3% of GMV, late 10% of the time vs 7%): fix them first. |
 | 4 | Who buys what, and how should customers be segmented? | RFM on Recency × Monetary (Frequency is useless when 97% buy once). **Lapsed big spenders**: 22% of customers, 40% of GMV. Card installments rise with basket size (Spearman 0.46), from 1.7 below BRL 50 to 7.8 above BRL 1,000. |
-| 5 | How many orders next quarter, and what first? | **~25,400 orders in Q4 2018** (~27,000 with a Black Friday spike), +46% on Q4 2017; 80% band 19,750-31,130. The damped-trend model's hold-out error (22%) is no better than a naive forecast, so plan on the band. |
+| 5 | How many orders next quarter, and what first? | **~25,400 orders in Q4 2018** (~27,000 with a Black Friday spike), +46% on Q4 2017; 80% band 19,800-31,100. The damped-trend model's hold-out error (22%) is no better than a naive forecast, so plan on the band. |
 
 **Recommendations (sized in the notebook):**
 1. **Cut lateness, starting with the 32 big, poorly rated sellers.** Halving late deliveries would remove ~1,600 1-2 star reviews (14% of them).
