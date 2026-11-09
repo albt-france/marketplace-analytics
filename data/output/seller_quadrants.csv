@@ -1,0 +1,5 @@
+quadrant,sellers,gmv,orders,avg_review,late_rate,gmv_share
+Big & poor rating: fix first,32,925930.47,5485,3.52472,0.10415,0.06305
+Big & well rated: protect,255,8843338.59,52125,4.12296,0.06827,0.60213
+Small & poor rating: monitor,45,260161.02,2508,3.56638,0.12538,0.01771
+"Small, well rated or < 30 orders",2546,4657303.15,32587,4.04689,0.06876,0.31711

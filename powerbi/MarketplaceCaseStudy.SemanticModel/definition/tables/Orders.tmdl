@@ -1,0 +1,149 @@
+/// One row per order placed Jan 2017 - Jul 2018 (all statuses; measures keep valid orders only)
+table Orders
+	lineageTag: a02523a4-a604-5e95-bfa6-36027c9dc384
+
+	column order_id
+		dataType: string
+		lineageTag: 136b7a14-b381-5781-a3d0-3ccb425c3bf5
+		summarizeBy: none
+		sourceColumn: order_id
+
+	column customer_unique_id
+		dataType: string
+		lineageTag: bf298da3-19fc-54d8-82e5-653f88551598
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+	column customer_state
+		dataType: string
+		lineageTag: 7a169377-74f5-5ae6-b4af-82bf7130d31d
+		summarizeBy: none
+		sourceColumn: customer_state
+
+	column order_status
+		dataType: string
+		lineageTag: 684bfc9e-55b3-54a4-9695-ac177e7c7775
+		summarizeBy: none
+		sourceColumn: order_status
+
+	column purchase_date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: c4c82290-63fd-5ba4-9d3c-98d3b63780e5
+		summarizeBy: none
+		sourceColumn: purchase_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column is_valid
+		dataType: boolean
+		lineageTag: 6bedd7bd-d80e-5621-9953-83a8f3ce9b60
+		summarizeBy: none
+		sourceColumn: is_valid
+
+	column items
+		dataType: int64
+		formatString: 0
+		lineageTag: 6e706c7a-724f-5d52-819b-86f084cebc0d
+		summarizeBy: none
+		sourceColumn: items
+
+	column item_value
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 46d97baf-4c2a-568a-86f3-730e432b18eb
+		summarizeBy: none
+		sourceColumn: item_value
+
+	column freight
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 66b2db40-ebce-5ac5-a6da-14357e02bcc3
+		summarizeBy: none
+		sourceColumn: freight
+
+	column gmv
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 16aa85da-49d2-5b82-b6bb-36024c77288c
+		summarizeBy: none
+		sourceColumn: gmv
+
+	column paid
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 82a75568-5134-5ea3-ab2b-b227620f64f7
+		summarizeBy: none
+		sourceColumn: paid
+
+	column main_payment_type
+		dataType: string
+		lineageTag: aa9f6869-233d-5aff-bce4-963a3d2bf570
+		summarizeBy: none
+		sourceColumn: main_payment_type
+
+	column card_installments
+		dataType: int64
+		formatString: 0
+		lineageTag: a63c7542-82cc-5fbf-aa6f-614318692d26
+		summarizeBy: none
+		sourceColumn: card_installments
+
+	column delivered_date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 96e2e37d-b9c8-5910-af05-1cb9e474c420
+		summarizeBy: none
+		sourceColumn: delivered_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column estimated_date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 66c8ea61-ffe0-59f0-8146-7a7502a23f10
+		summarizeBy: none
+		sourceColumn: estimated_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 3741333b-c328-5cc3-a0fa-9e04518d18fe
+		summarizeBy: none
+		sourceColumn: delivery_days
+
+	column delay_days
+		dataType: int64
+		formatString: 0
+		lineageTag: bd179d2b-55c0-5411-be72-0f0cb193b8d2
+		summarizeBy: none
+		sourceColumn: delay_days
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 9921abb2-bf3b-5db8-80aa-d99f5d984571
+		summarizeBy: none
+		sourceColumn: review_score
+
+	column order_seq
+		dataType: int64
+		formatString: 0
+		lineageTag: 2bb6c989-d5b9-5420-a887-591a0d2b6bcf
+		summarizeBy: none
+		sourceColumn: order_seq
+
+	partition Orders = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\orders.parquet")),
+					Selected = Table.SelectColumns(Source, {"order_id", "customer_unique_id", "customer_state", "order_status", "purchase_date", "is_valid", "items", "item_value", "freight", "gmv", "paid", "main_payment_type", "card_installments", "delivered_date", "estimated_date", "delivery_days", "delay_days", "review_score", "order_seq", "in_window"}),
+					Window = Table.SelectRows(Selected, each [in_window] = true),
+					Trimmed = Table.RemoveColumns(Window, {"in_window"}),
+					Typed = Table.TransformColumnTypes(Trimmed, {{"order_id", type text}, {"customer_unique_id", type text}, {"customer_state", type text}, {"order_status", type text}, {"purchase_date", type date}, {"is_valid", type logical}, {"items", Int64.Type}, {"item_value", type number}, {"freight", type number}, {"gmv", type number}, {"paid", type number}, {"main_payment_type", type text}, {"card_installments", Int64.Type}, {"delivered_date", type date}, {"estimated_date", type date}, {"delivery_days", Int64.Type}, {"delay_days", Int64.Type}, {"review_score", Int64.Type}, {"order_seq", Int64.Type}})
+				in
+					Typed
+

@@ -1,0 +1,282 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1440.3335316728517,
+            "y": 387.55357830505977
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "8db8ff8b-60e7-546f-a7ce-ebca7d6d83c8",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1724.3335316728517,
+            "y": 425.55357830505977
+          },
+          "nodeIndex": "Category Repurchase",
+          "nodeLineageTag": "739e470e-3139-5776-9ab8-78b2325a2734",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2008.3335316728517,
+            "y": 425.55357830505977
+          },
+          "nodeIndex": "Cohort Retention",
+          "nodeLineageTag": "8cdcc240-f0fe-5bf3-bc01-c182f577e14d",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 916.39289518444969,
+            "y": 281.64977424784911
+          },
+          "nodeIndex": "Customers",
+          "nodeLineageTag": "1937bcd0-5b18-5660-872a-e25be883b822",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 626.43562017611634,
+            "y": 801.10715661011977
+          },
+          "nodeIndex": "Date",
+          "nodeLineageTag": "1dab60e0-cbc3-5cdf-9650-802d70884bca",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2292.3335316728517,
+            "y": 401.55357830505977
+          },
+          "nodeIndex": "Delay Buckets",
+          "nodeLineageTag": "028f9d90-6ec5-5da5-8664-b2f3d325ab55",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2576.3335316728517,
+            "y": 387.55357830505977
+          },
+          "nodeIndex": "Delivery Stats",
+          "nodeLineageTag": "454a1fc9-fae5-5b90-883c-00839cf9c1af",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2860.3335316728517,
+            "y": 461.55357830505977
+          },
+          "nodeIndex": "Forecast Models",
+          "nodeLineageTag": "6941e49d-aa25-5795-83ec-841d4d6abc6a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3144.3335316728517,
+            "y": 401.55357830505977
+          },
+          "nodeIndex": "Forecast Weekly",
+          "nodeLineageTag": "51d66a06-2a51-5956-b28e-feab8e249164",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1206.3335316728519,
+            "y": 191.62338690373713
+          },
+          "nodeIndex": "Geo",
+          "nodeLineageTag": "96b1b038-734b-5bdd-b82c-ea2d2cf8e577",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3428.3335316728517,
+            "y": 437.55357830505977
+          },
+          "nodeIndex": "Installments",
+          "nodeLineageTag": "9b568a09-b6ca-5360-ba63-57fd7d2e723b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 339.62152026853437,
+            "y": 179.7193370912928
+          },
+          "nodeIndex": "OrderItems",
+          "nodeLineageTag": "10d9f73f-3909-57d4-8398-7cd525c2cf02",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 626.4064736241105,
+            "y": 411.31546326749219
+          },
+          "nodeIndex": "Orders",
+          "nodeLineageTag": "a02523a4-a604-5e95-bfa6-36027c9dc384",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 336.5194404236729,
+            "y": 703.70319080994761
+          },
+          "nodeIndex": "Payments",
+          "nodeLineageTag": "3cba9f98-d88a-594a-bd00-9f2fd00f9cb4",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 216.9974405856733,
+            "y": -50
+          },
+          "nodeIndex": "Products",
+          "nodeLineageTag": "23c02527-e471-5eec-9078-c48948fc88f4",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3712.3335316728517,
+            "y": 401.55357830505977
+          },
+          "nodeIndex": "Repurchase Model",
+          "nodeLineageTag": "637847c3-90cd-560b-9c7c-7d3be9b59c6e",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 916.33840360948307,
+            "y": 638.40018941779249
+          },
+          "nodeIndex": "Reviews",
+          "nodeLineageTag": "f8fdfc80-e00a-5c2b-b87d-14b166b9e8e9",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3996.3335316728517,
+            "y": 401.55357830505977
+          },
+          "nodeIndex": "RFM Segments",
+          "nodeLineageTag": "202c4aa4-43b5-525e-9ae6-40d42b9c3a9b",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 4280.3335316728517,
+            "y": 413.55357830505977
+          },
+          "nodeIndex": "Seller Quadrants",
+          "nodeLineageTag": "d3577392-d9fd-5da6-9f77-fb66f4cab3c9",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 342.35350559622503
+          },
+          "nodeIndex": "Sellers",
+          "nodeLineageTag": "7b843550-9216-5940-82b8-3af1c8c6ab99",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Toutes les tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Toutes les tables",
+  "defaultDiagram": "Toutes les tables"
+}

@@ -1,0 +1,49 @@
+table Installments
+	lineageTag: 9b568a09-b6ca-5360-ba63-57fd7d2e723b
+
+	column value_band
+		dataType: string
+		lineageTag: 43afe185-8514-520a-b8b7-f2b441d88deb
+		summarizeBy: none
+		sourceColumn: value_band
+		sortByColumn: band_order
+
+	column orders
+		dataType: int64
+		formatString: #,0
+		lineageTag: c87f08d9-783f-5386-b5d6-9740aedc2e08
+		summarizeBy: none
+		sourceColumn: orders
+
+	column avg_installments
+		dataType: double
+		formatString: 0.0
+		lineageTag: b0af5fc2-f484-598c-b2c4-666c938f9c64
+		summarizeBy: none
+		sourceColumn: avg_installments
+
+	column share_one_payment
+		dataType: double
+		formatString: 0%
+		lineageTag: 93b6e6e6-5fad-5947-9532-5534c0c86277
+		summarizeBy: none
+		sourceColumn: share_one_payment
+
+	column band_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a5c5ea32-ad53-5297-8be5-edae0c5bb2a6
+		summarizeBy: none
+		sourceColumn: band_order
+
+	partition Installments = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\installments_by_value.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"value_band", type text}, {"orders", Int64.Type}, {"avg_installments", type number}, {"share_one_payment", type number}, {"band_order", Int64.Type}}, "en-US")
+				in
+					Typed
+

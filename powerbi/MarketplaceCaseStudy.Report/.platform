@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "MarketplaceCaseStudy"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f230a1bd-1421-4dff-b73b-54312534b04a"
+  }
+}

@@ -1,0 +1,50 @@
+table Reviews
+	lineageTag: f8fdfc80-e00a-5c2b-b87d-14b166b9e8e9
+
+	column review_id
+		dataType: string
+		lineageTag: d6857f79-59ee-5f28-bfca-22faa12f52e5
+		summarizeBy: none
+		sourceColumn: review_id
+
+	column order_id
+		dataType: string
+		lineageTag: 4f995485-1c35-5687-a189-8e5fb6e40c45
+		summarizeBy: none
+		sourceColumn: order_id
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 53f9b838-5eed-5419-81ed-165d8fc12324
+		summarizeBy: none
+		sourceColumn: review_score
+
+	column review_date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 2d2c61f2-6e77-5b16-a03e-e3aa65d243f3
+		summarizeBy: none
+		sourceColumn: review_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column has_comment
+		dataType: boolean
+		lineageTag: 0aeebcca-edd8-59ed-b648-03ca6f7875d5
+		summarizeBy: none
+		sourceColumn: has_comment
+
+	partition Reviews = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\reviews.parquet")),
+					Selected = Table.SelectColumns(Source, {"review_id", "order_id", "review_score", "review_date", "has_comment"}),
+					OrderKeys = Table.RenameColumns(Table.SelectColumns(Orders, {"order_id"}), {{"order_id", "k"}}),
+					Joined = Table.Join(Selected, "order_id", OrderKeys, "k", JoinKind.Inner),
+					Kept = Table.RemoveColumns(Joined, {"k"}),
+					Typed = Table.TransformColumnTypes(Kept, {{"review_id", type text}, {"order_id", type text}, {"review_score", Int64.Type}, {"review_date", type date}, {"has_comment", type logical}})
+				in
+					Typed
+

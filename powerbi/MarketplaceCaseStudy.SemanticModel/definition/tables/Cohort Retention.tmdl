@@ -1,0 +1,59 @@
+table 'Cohort Retention'
+	lineageTag: 8cdcc240-f0fe-5bf3-bc01-c182f577e14d
+
+	column cohort_month
+		dataType: dateTime
+		isHidden
+		formatString: mmm yyyy
+		lineageTag: 02db7dfa-3c0c-5ee0-ac87-4dbad7fcebec
+		summarizeBy: none
+		sourceColumn: cohort_month
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cohort_label
+		dataType: string
+		lineageTag: 33bcdce5-ca77-54b6-98fe-94a0a683518e
+		summarizeBy: none
+		sourceColumn: cohort_label
+		sortByColumn: cohort_month
+
+	column customers
+		dataType: int64
+		formatString: #,0
+		lineageTag: ceab3541-ac91-5dcc-96f6-3530873c52c9
+		summarizeBy: none
+		sourceColumn: customers
+
+	column month_n
+		dataType: int64
+		formatString: 0
+		lineageTag: aac856a9-b270-5fcd-a202-e42e3ffcbd4b
+		summarizeBy: none
+		sourceColumn: month_n
+
+	column active_customers
+		dataType: int64
+		formatString: #,0
+		lineageTag: b06c7269-4d9d-5276-8c69-5327c1e96849
+		summarizeBy: none
+		sourceColumn: active_customers
+
+	column retention
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 5da8fb56-e04e-5120-b6ad-7fc976212620
+		summarizeBy: none
+		sourceColumn: retention
+
+	partition 'Cohort Retention' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\02_cohort_retention.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"cohort_month", type date}, {"customers", Int64.Type}, {"month_n", Int64.Type}, {"active_customers", Int64.Type}, {"retention", type number}}, "en-US"),
+					Labeled = Table.AddColumn(Typed, "cohort_label", each Date.ToText([cohort_month], "MMM yyyy", "en-US"), type text)
+				in
+					Labeled
+

@@ -1,0 +1,49 @@
+table Payments
+	lineageTag: 3cba9f98-d88a-594a-bd00-9f2fd00f9cb4
+
+	column order_id
+		dataType: string
+		lineageTag: d1ea6be5-2a52-5cdc-bee0-08b9d3fa7c23
+		summarizeBy: none
+		sourceColumn: order_id
+
+	column payment_sequential
+		dataType: int64
+		formatString: 0
+		lineageTag: 31af8fd8-911e-5534-ac52-b6aa7ed1bce0
+		summarizeBy: none
+		sourceColumn: payment_sequential
+
+	column payment_type
+		dataType: string
+		lineageTag: 36a10e91-4a11-5b2b-99b8-8e381337c5aa
+		summarizeBy: none
+		sourceColumn: payment_type
+
+	column installments
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c280a73-11e0-5bcc-a94b-b0e873236918
+		summarizeBy: none
+		sourceColumn: installments
+
+	column payment_value
+		dataType: double
+		formatString: #,0.00
+		lineageTag: e90a0306-b4cb-568c-bd27-241e3af1de3e
+		summarizeBy: none
+		sourceColumn: payment_value
+
+	partition Payments = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\payments.parquet")),
+					Selected = Table.SelectColumns(Source, {"order_id", "payment_sequential", "payment_type", "installments", "payment_value"}),
+					OrderKeys = Table.RenameColumns(Table.SelectColumns(Orders, {"order_id"}), {{"order_id", "k"}}),
+					Joined = Table.Join(Selected, "order_id", OrderKeys, "k", JoinKind.Inner),
+					Kept = Table.RemoveColumns(Joined, {"k"}),
+					Typed = Table.TransformColumnTypes(Kept, {{"order_id", type text}, {"payment_sequential", Int64.Type}, {"payment_type", type text}, {"installments", Int64.Type}, {"payment_value", type number}})
+				in
+					Typed
+

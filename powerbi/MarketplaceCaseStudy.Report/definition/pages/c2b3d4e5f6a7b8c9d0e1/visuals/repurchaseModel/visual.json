@@ -1,0 +1,186 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "repurchaseModel",
+  "position": {
+    "x": 972,
+    "y": 684,
+    "z": 11000,
+    "height": 344,
+    "width": 916,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Repurchase Model"
+                    }
+                  },
+                  "Property": "model"
+                }
+              },
+              "queryRef": "Repurchase Model.model",
+              "nativeQueryRef": "model",
+              "displayName": "Model"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Repurchase Model"
+                    }
+                  },
+                  "Property": "variable"
+                }
+              },
+              "queryRef": "Repurchase Model.variable",
+              "nativeQueryRef": "variable",
+              "displayName": "Variable"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Repurchase Model"
+                    }
+                  },
+                  "Property": "odds_ratio"
+                }
+              },
+              "queryRef": "Repurchase Model.odds_ratio",
+              "nativeQueryRef": "odds_ratio",
+              "displayName": "Odds ratio"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Repurchase Model"
+                    }
+                  },
+                  "Property": "ci_txt"
+                }
+              },
+              "queryRef": "Repurchase Model.ci_txt",
+              "nativeQueryRef": "ci_txt",
+              "displayName": "95% CI"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Repurchase Model"
+                    }
+                  },
+                  "Property": "p_txt"
+                }
+              },
+              "queryRef": "Repurchase Model.p_txt",
+              "nativeQueryRef": "p_txt",
+              "displayName": "p-value"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#52514E'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Repurchase within 180 days, logistic regression (odds ratio < 1 = less repurchase; a CI that includes 1 = not significant)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+table Geo
+	lineageTag: 96b1b038-734b-5bdd-b82c-ea2d2cf8e577
+
+	column state
+		dataType: string
+		isKey
+		lineageTag: ef28d3aa-8fbe-56b5-b182-da496b7b7c30
+		summarizeBy: none
+		sourceColumn: state
+
+	column state_name
+		dataType: string
+		lineageTag: e7ceb815-bccb-5c28-a492-251b05e053d7
+		summarizeBy: none
+		sourceColumn: state_name
+
+	column region
+		dataType: string
+		lineageTag: a97db9c9-f083-5dc6-ab05-717f98157d82
+		summarizeBy: none
+		sourceColumn: region
+
+	partition Geo = m
+		mode: import
+		source =
+				let
+					Typed = #table(type table [state = text, state_name = text, region = text], {{"AC", "Acre", "North"}, {"AL", "Alagoas", "Northeast"}, {"AP", "Amapá", "North"}, {"AM", "Amazonas", "North"}, {"BA", "Bahia", "Northeast"}, {"CE", "Ceará", "Northeast"}, {"DF", "Distrito Federal", "Center-West"}, {"ES", "Espírito Santo", "Southeast"}, {"GO", "Goiás", "Center-West"}, {"MA", "Maranhão", "Northeast"}, {"MT", "Mato Grosso", "Center-West"}, {"MS", "Mato Grosso do Sul", "Center-West"}, {"MG", "Minas Gerais", "Southeast"}, {"PA", "Pará", "North"}, {"PB", "Paraíba", "Northeast"}, {"PR", "Paraná", "South"}, {"PE", "Pernambuco", "Northeast"}, {"PI", "Piauí", "Northeast"}, {"RJ", "Rio de Janeiro", "Southeast"}, {"RN", "Rio Grande do Norte", "Northeast"}, {"RS", "Rio Grande do Sul", "South"}, {"RO", "Rondônia", "North"}, {"RR", "Roraima", "North"}, {"SC", "Santa Catarina", "South"}, {"SP", "São Paulo", "Southeast"}, {"SE", "Sergipe", "Northeast"}, {"TO", "Tocantins", "North"}})
+				in
+					Typed
+

@@ -1,0 +1,67 @@
+table 'RFM Segments'
+	lineageTag: 202c4aa4-43b5-525e-9ae6-40d42b9c3a9b
+
+	column segment
+		dataType: string
+		lineageTag: 6515b1f6-35fd-571d-b41f-cfabee1b30ff
+		summarizeBy: none
+		sourceColumn: segment
+
+	column customers
+		dataType: int64
+		formatString: #,0
+		lineageTag: a8c8358d-f0d7-547f-8126-277387894e84
+		summarizeBy: none
+		sourceColumn: customers
+
+	column gmv
+		dataType: double
+		formatString: #,0
+		lineageTag: 45798ac0-0e31-5036-bc13-d27e675ff2d1
+		summarizeBy: none
+		sourceColumn: gmv
+
+	column avg_spend
+		dataType: double
+		formatString: #,0
+		lineageTag: d0d447f1-7432-5e78-8f4b-e4f0fbe9e2b4
+		summarizeBy: none
+		sourceColumn: avg_spend
+
+	column avg_recency_days
+		dataType: double
+		formatString: 0
+		lineageTag: 6eb8450f-008d-5888-a1ce-2a32f7dcbd25
+		summarizeBy: none
+		sourceColumn: avg_recency_days
+
+	column customer_share
+		dataType: double
+		formatString: 0%
+		lineageTag: e231c303-4785-5f74-99b8-4cd46bfa5395
+		summarizeBy: none
+		sourceColumn: customer_share
+
+	column gmv_share
+		dataType: double
+		formatString: 0%
+		lineageTag: f41f169d-0e7f-5191-a48a-e3abb1ebd7ee
+		summarizeBy: none
+		sourceColumn: gmv_share
+
+	column top_categories
+		dataType: string
+		lineageTag: 758f327d-0604-5615-a496-2c7c4c7ec65d
+		summarizeBy: none
+		sourceColumn: top_categories
+
+	partition 'RFM Segments' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\rfm_segments.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"segment", type text}, {"customers", Int64.Type}, {"gmv", type number}, {"avg_spend", type number}, {"avg_recency_days", type number}, {"customer_share", type number}, {"gmv_share", type number}, {"top_categories", type text}}, "en-US")
+				in
+					Typed
+

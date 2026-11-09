@@ -1,0 +1,45 @@
+key,value,label
+valid_orders,91484.0,"Valid orders, Jan 2017 - Jul 2018"
+gmv_total,14686733.0,"GMV (BRL), Jan 2017 - Jul 2018"
+gmv_growth_ytd,1.6076,GMV growth Jan-Jul 2018 vs Jan-Jul 2017
+orders_growth_ytd,1.5757,Orders growth Jan-Jul 2018 vs Jan-Jul 2017
+customers,88494.0,Real customers (customer_unique_id) with a valid order
+repeat_rate,0.0304,"Share of customers with 2+ valid orders, Jan 2017 - Jul 2018"
+new_customer_order_share,0.9672,Share of orders that are a customer's first order
+retention_m1,0.0048,Average month-1 retention (weighted by cohort size)
+late_share,0.0672,Share of delivered orders arriving after the promised date
+review_on_time,4.28,"Average review, on-time orders"
+review_late,2.22,"Average review, late orders"
+low_on_time,0.0938,"Share of 1-2 star reviews, on-time orders"
+low_late,0.6369,"Share of 1-2 star reviews, late orders"
+repurchase_180d,0.0201,Repurchase within 180 days of first order (first orders Jan 2017 - Jan 2018)
+late_odds_ratio,0.836,"Odds ratio of repurchase, late vs on-time first order"
+review_gap_ci_low,2.02,"Bootstrap 95% CI of the review gap, low"
+review_gap_ci_high,2.1,"Bootstrap 95% CI of the review gap, high"
+late_odds_p,0.2396,p-value of the late first-order effect on repurchase
+sellers_active,2878.0,Sellers with GMV in the window
+sellers_80_share,0.1835,Share of sellers making 80% of GMV
+top10_gmv_share,0.6652,GMV share of the top 10% sellers
+fix_sellers,32.0,Big sellers (top 10% GMV) with average review below 3.8
+fix_gmv_share,0.063,GMV share of those sellers
+one_time_share,0.9696,Share of customers with a single order
+aov,160.54,"Average order value (BRL, incl. freight)"
+installments_rho,0.46,"Spearman correlation, order value vs card installments"
+avg_installments,3.52,Average number of card installments
+forecast_mape,0.2179,"Hold-out error (MAPE, last 12 weeks), Holt, damped trend"
+forecast_quarter,25440.0,"Forecast orders, Q4 2018 (13 weeks), no Black Friday effect"
+forecast_quarter_bf,26950.0,"Forecast orders, Q4 2018, with the 2017 Black Friday uplift"
+forecast_quarter_low,19750.0,"Q4 2018 forecast, low end of the 80% band"
+forecast_quarter_high,31130.0,"Q4 2018 forecast, high end of the 80% band"
+forecast_week,1934.0,Forecast average orders per week
+q4_2017_orders,17460.0,"Actual orders, Q4 2017 (13 weeks from 2 Oct)"
+forecast_q4_growth,0.457,Q4 2018 forecast vs Q4 2017 actual
+bf_uplift,1.77,Black Friday 2017 week vs a normal week
+forecast_naive_mape,0.2127,Hold-out MAPE of the naive forecast
+low_from_late_share,0.3284,Share of all 1-2 star reviews that follow a late delivery
+fix_late_rate,0.0962,"Late rate of the big, poorly rated sellers"
+rec1_avoided_low_reviews,1630.0,1-2 star reviews avoided by halving late deliveries
+rec1_avoided_share,0.14,Share of all 1-2 star reviews avoided by halving late deliveries
+rec3_top_rate,0.033,Best first-order category repurchase rate (180 days)
+rec2_orders_per_pt,707.0,Extra orders per year per +1 pt of repurchase
+rec2_gmv_per_pt,113483.0,Extra GMV (BRL) per year per +1 pt of repurchase

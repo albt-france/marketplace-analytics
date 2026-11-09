@@ -1,0 +1,70 @@
+/// Real customer key: customer_unique_id (customer_id changes with every order)
+table Customers
+	lineageTag: 1937bcd0-5b18-5660-872a-e25be883b822
+
+	column customer_unique_id
+		dataType: string
+		isKey
+		lineageTag: c7d16f3e-0e47-5717-837a-733578d7446e
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+	column state
+		dataType: string
+		lineageTag: 753d0b57-34dd-57fb-983e-bcd8ad8c31fe
+		summarizeBy: none
+		sourceColumn: state
+
+	column first_purchase_date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 27951c22-b61d-51cf-a3ef-550ba18e6196
+		summarizeBy: none
+		sourceColumn: first_purchase_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cohort_month
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: 04f7cacc-5d05-52eb-bb04-1d18eed57d87
+		summarizeBy: none
+		sourceColumn: cohort_month
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column segment
+		dataType: string
+		lineageTag: 61980df9-3b73-57f8-aaab-158432b365a7
+		summarizeBy: none
+		sourceColumn: segment
+
+	column r_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 246a0858-0918-5d47-ad07-5bf01c7be38d
+		summarizeBy: none
+		sourceColumn: r_score
+
+	column m_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 23622cb9-8a5f-5dc3-a4f8-52c4478ee067
+		summarizeBy: none
+		sourceColumn: m_score
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\customers.parquet")),
+					Base = Table.SelectColumns(Source, {"customer_unique_id", "state", "first_purchase_date", "cohort_month"}),
+					Rfm = Table.TransformColumnTypes(Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "output\05_rfm.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]), [PromoteAllScalars=true]), {{"r_score", Int64.Type}, {"m_score", Int64.Type}}, "en-US"),
+					RfmCols = Table.SelectColumns(Rfm, {"customer_unique_id", "segment", "r_score", "m_score"}),
+					Merged = Table.NestedJoin(Base, {"customer_unique_id"}, RfmCols, {"customer_unique_id"}, "rfm", JoinKind.LeftOuter),
+					Expanded = Table.ExpandTableColumn(Merged, "rfm", {"segment", "r_score", "m_score"}),
+					Filled = Table.ReplaceValue(Expanded, null, "6 · First order after snapshot", Replacer.ReplaceValue, {"segment"}),
+					Typed = Table.TransformColumnTypes(Filled, {{"customer_unique_id", type text}, {"state", type text}, {"first_purchase_date", type date}, {"cohort_month", type date}, {"segment", type text}, {"r_score", Int64.Type}, {"m_score", Int64.Type}})
+				in
+					Typed
+

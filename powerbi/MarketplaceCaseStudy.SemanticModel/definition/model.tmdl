@@ -1,0 +1,37 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Orders","OrderItems","Payments","Reviews","Customers","Sellers","Products","Date","Geo","Cohort Retention","Delay Buckets","Delivery Stats","Repurchase Model","RFM Segments","Installments","Category Repurchase","Forecast Weekly","Seller Quadrants","Forecast Models","_Measures","DataFolder"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Orders
+ref table OrderItems
+ref table Payments
+ref table Reviews
+ref table Customers
+ref table Sellers
+ref table Products
+ref table Date
+ref table Geo
+ref table 'Cohort Retention'
+ref table 'Delay Buckets'
+ref table 'Delivery Stats'
+ref table 'Repurchase Model'
+ref table 'RFM Segments'
+ref table Installments
+ref table 'Category Repurchase'
+ref table 'Forecast Weekly'
+ref table 'Seller Quadrants'
+ref table 'Forecast Models'
+ref table _Measures
+
+ref cultureInfo en-US
+

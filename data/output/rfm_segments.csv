@@ -1,0 +1,6 @@
+segment,customers,gmv,avg_spend,avg_recency_days,customer_share,gmv_share,top_categories
+1 · Repeat buyers,2702,830768.9,307.46443,208.42561,0.03044,0.05637,"bed bath table, sports leisure, furniture decor"
+2 · Recent big spenders,13744,4160187.96,302.69121,85.44601,0.15482,0.28227,"watches gifts, health beauty, computers accessories"
+3 · Recent small spenders,20585,1505226.35,73.12248,85.96808,0.23188,0.10213,"health beauty, bed bath table, sports leisure"
+4 · Lapsed big spenders,19624,5906146.92,300.9655,319.27589,0.22106,0.40073,"watches gifts, health beauty, computers accessories"
+5 · Lapsed small spenders,32119,2336056.93,72.73131,320.82204,0.36181,0.1585,"bed bath table, sports leisure, health beauty"

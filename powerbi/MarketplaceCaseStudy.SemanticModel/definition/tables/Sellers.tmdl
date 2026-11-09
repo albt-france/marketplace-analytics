@@ -1,0 +1,113 @@
+/// Seller scorecard (sql/04_seller_scorecard.sql) merged into the seller dimension
+table Sellers
+	lineageTag: 7b843550-9216-5940-82b8-3af1c8c6ab99
+
+	column seller_id
+		dataType: string
+		isKey
+		lineageTag: ba1424b2-d8ef-55c6-9455-7e6d12c96ceb
+		summarizeBy: none
+		sourceColumn: seller_id
+
+	column state
+		dataType: string
+		lineageTag: 9bab1b3f-e9de-5915-a65d-1001a4bf00e5
+		summarizeBy: none
+		sourceColumn: state
+
+	column city
+		dataType: string
+		lineageTag: 1b935272-7147-5c04-b51e-02ead5e7984d
+		summarizeBy: none
+		sourceColumn: city
+
+	column orders
+		dataType: int64
+		formatString: #,0
+		lineageTag: 0598241a-2bea-55ed-af7a-9ec53b4cd1ba
+		summarizeBy: none
+		sourceColumn: orders
+
+	column gmv
+		dataType: double
+		formatString: #,0
+		lineageTag: fcc35532-9120-556a-a31a-9b20dcf6e28b
+		summarizeBy: none
+		sourceColumn: gmv
+
+	column gmv_rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e7555be-4451-503e-92d3-3d136612307e
+		summarizeBy: none
+		sourceColumn: gmv_rank
+
+	column seller_percentile
+		dataType: double
+		formatString: 0.0%
+		lineageTag: d61c9c0d-7307-5086-a8bf-b45453c7a752
+		summarizeBy: none
+		sourceColumn: seller_percentile
+
+	column cum_gmv_share
+		dataType: double
+		formatString: 0.0%
+		lineageTag: a65ccfd0-a3c2-590e-b8d7-b296db228aa1
+		summarizeBy: none
+		sourceColumn: cum_gmv_share
+
+	column avg_delay_days
+		dataType: double
+		formatString: 0.0
+		lineageTag: af876ec4-2ae0-5dcc-a03c-96bcabf266d0
+		summarizeBy: none
+		sourceColumn: avg_delay_days
+
+	column late_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 70fcb693-1801-5fab-855f-49bf140e9649
+		summarizeBy: none
+		sourceColumn: late_rate
+
+	column avg_review
+		dataType: double
+		formatString: 0.00
+		lineageTag: c361e5de-3dcf-521e-b849-f8511602f8ba
+		summarizeBy: none
+		sourceColumn: avg_review
+
+	column share_1_2_stars
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 2ef30b1d-0b9d-5f9c-9d50-f573b4522ea0
+		summarizeBy: none
+		sourceColumn: share_1_2_stars
+
+	column cancel_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: a98e17a4-dc4f-570e-803f-edb460baba7b
+		summarizeBy: none
+		sourceColumn: cancel_rate
+
+	column quadrant
+		dataType: string
+		lineageTag: 46e9a160-3901-5ef1-a6fb-a0652f018ab1
+		summarizeBy: none
+		sourceColumn: quadrant
+
+	partition Sellers = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\sellers.parquet")),
+					Card = Table.PromoteHeaders(Csv.Document(File.Contents(DataFolder & "output\04_seller_scorecard.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]), [PromoteAllScalars=true]),
+					CardCols = Table.SelectColumns(Card, {"seller_id", "orders", "gmv", "gmv_rank", "seller_percentile", "cum_gmv_share", "avg_delay_days", "late_rate", "avg_review", "share_1_2_stars", "cancel_rate", "quadrant"}),
+					Merged = Table.NestedJoin(Source, {"seller_id"}, CardCols, {"seller_id"}, "card", JoinKind.LeftOuter),
+					Expanded = Table.ExpandTableColumn(Merged, "card", {"orders", "gmv", "gmv_rank", "seller_percentile", "cum_gmv_share", "avg_delay_days", "late_rate", "avg_review", "share_1_2_stars", "cancel_rate", "quadrant"}),
+					Filled = Table.ReplaceValue(Expanded, null, "No sales in window", Replacer.ReplaceValue, {"quadrant"}),
+					Typed = Table.TransformColumnTypes(Filled, {{"seller_id", type text}, {"state", type text}, {"city", type text}, {"orders", Int64.Type}, {"gmv", type number}, {"gmv_rank", Int64.Type}, {"seller_percentile", type number}, {"cum_gmv_share", type number}, {"avg_delay_days", type number}, {"late_rate", type number}, {"avg_review", type number}, {"share_1_2_stars", type number}, {"cancel_rate", type number}, {"quadrant", type text}}, "en-US")
+				in
+					Typed
+

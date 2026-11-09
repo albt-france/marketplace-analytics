@@ -1,0 +1,68 @@
+table Date
+	lineageTag: 1dab60e0-cbc3-5cdf-9650-802d70884bca
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: dd mmm yyyy
+		lineageTag: c6f9e197-1eeb-5cb8-9328-b270d6112966
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Month
+		dataType: string
+		lineageTag: 44515582-73a6-5c68-ad7f-cd6051dd49e0
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: MonthKey
+
+	column MonthKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 269b438f-4bbb-5c85-9a40-17e53779b20c
+		summarizeBy: none
+		sourceColumn: MonthKey
+
+	column MonthStart
+		dataType: dateTime
+		formatString: mmm yyyy
+		lineageTag: 9d8a7135-089d-5239-8dc3-267dc9d141da
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 52128030-b8b2-52ce-b959-a6125de04021
+		summarizeBy: none
+		sourceColumn: Year
+
+	column WeekStart
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 6465b0ca-7f1a-5419-8cc4-92f404207d23
+		summarizeBy: none
+		sourceColumn: WeekStart
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Date = m
+		mode: import
+		source =
+				let
+					Dates = List.Dates(#date(2017, 1, 1), Duration.Days(#date(2018, 12, 31) - #date(2017, 1, 1)) + 1, #duration(1, 0, 0, 0)),
+					T = Table.FromList(Dates, Splitter.SplitByNothing(), type table [Date = date]),
+					M = Table.AddColumn(T, "Month", each Date.ToText([Date], "MMM yyyy", "en-US"), type text),
+					K = Table.AddColumn(M, "MonthKey", each Date.Year([Date]) * 100 + Date.Month([Date]), Int64.Type),
+					S = Table.AddColumn(K, "MonthStart", each Date.StartOfMonth([Date]), type date),
+					Y = Table.AddColumn(S, "Year", each Date.Year([Date]), Int64.Type),
+					Typed = Table.AddColumn(Y, "WeekStart", each Date.StartOfWeek([Date], Day.Monday), type date)
+				in
+					Typed
+

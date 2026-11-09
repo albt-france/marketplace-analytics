@@ -1,0 +1,105 @@
+table 'Delivery Stats'
+	lineageTag: 454a1fc9-fae5-5b90-883c-00839cf9c1af
+
+	column metric
+		dataType: string
+		lineageTag: 4f6d96a7-d991-5978-86a9-891f0d192990
+		summarizeBy: none
+		sourceColumn: metric
+
+	column on_time
+		dataType: double
+		formatString: 0.00
+		lineageTag: b6ebdabf-a5e2-55ec-b95c-22d1675e32b1
+		summarizeBy: none
+		sourceColumn: on_time
+
+	column late
+		dataType: double
+		formatString: 0.00
+		lineageTag: e270110e-dc81-5155-b812-e60d307bf72f
+		summarizeBy: none
+		sourceColumn: late
+
+	column gap
+		dataType: double
+		formatString: 0.00
+		lineageTag: 970751e6-3dcb-5eb9-8b25-d2af40e905cd
+		summarizeBy: none
+		sourceColumn: gap
+
+	column ci_low
+		dataType: double
+		formatString: 0.00
+		lineageTag: f5748741-fd16-5627-95d1-6f8e301e55f1
+		summarizeBy: none
+		sourceColumn: ci_low
+
+	column ci_high
+		dataType: double
+		formatString: 0.00
+		lineageTag: 9db78957-66d3-5e38-b2b7-3caf34246d2f
+		summarizeBy: none
+		sourceColumn: ci_high
+
+	column p_value
+		dataType: double
+		formatString: 0.0E+00
+		lineageTag: ccffd30c-7009-58cb-b990-733810c74f04
+		summarizeBy: none
+		sourceColumn: p_value
+
+	column orders_on_time
+		dataType: int64
+		formatString: 0
+		lineageTag: 8dabf842-ea41-572a-b927-311fc0266a2a
+		summarizeBy: none
+		sourceColumn: orders_on_time
+
+	column orders_late
+		dataType: int64
+		formatString: 0
+		lineageTag: ed734baa-1988-56a3-b0db-6d332ba5dbc3
+		summarizeBy: none
+		sourceColumn: orders_late
+
+	column on_time_txt
+		dataType: string
+		lineageTag: e143cf19-ea66-5acd-bdd2-d3b745b5cb0f
+		summarizeBy: none
+		sourceColumn: on_time_txt
+
+	column late_txt
+		dataType: string
+		lineageTag: e96ab05e-c0e6-5f34-b3fa-3e3d423fe405
+		summarizeBy: none
+		sourceColumn: late_txt
+
+	column gap_txt
+		dataType: string
+		lineageTag: 88e69162-2572-5211-8753-6eba046b0a6d
+		summarizeBy: none
+		sourceColumn: gap_txt
+
+	column ci_txt
+		dataType: string
+		lineageTag: ea26f731-b5b5-5bc5-8d3d-41bd58438062
+		summarizeBy: none
+		sourceColumn: ci_txt
+
+	column p_txt
+		dataType: string
+		lineageTag: 644c289b-9b7c-5af5-abdc-764732f163c9
+		summarizeBy: none
+		sourceColumn: p_txt
+
+	partition 'Delivery Stats' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\delivery_stats.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"metric", type text}, {"on_time", type number}, {"late", type number}, {"gap", type number}, {"ci_low", type number}, {"ci_high", type number}, {"p_value", type number}, {"orders_on_time", Int64.Type}, {"orders_late", Int64.Type}, {"on_time_txt", type text}, {"late_txt", type text}, {"gap_txt", type text}, {"ci_txt", type text}, {"p_txt", type text}}, "en-US")
+				in
+					Typed
+

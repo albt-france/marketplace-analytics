@@ -1,0 +1,259 @@
+table _Measures
+	lineageTag: 8db8ff8b-60e7-546f-a7ce-ebca7d6d83c8
+
+	measure 'Order Count' = CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: 9eccc80b-d0fa-5b06-a9ae-e318fc950c2c
+
+	measure GMV = CALCULATE ( SUM ( Orders[gmv] ), Orders[is_valid] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: d68b07ec-0e3c-5961-a663-8405bc396fc9
+
+	measure 'GMV (BRL m)' = DIVIDE ( [GMV], 1000000 )
+		formatString: #,0.0
+		displayFolder: 1 Sales
+		lineageTag: c8997659-2ab6-5546-9b98-9902e73f4577
+
+	measure 'Avg Order Value' = DIVIDE ( [GMV], [Order Count] )
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: a9084d92-fe4e-5adf-8ba5-068f81264d9c
+
+	measure 'Item GMV' = CALCULATE ( SUM ( OrderItems[gmv] ), Orders[is_valid] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: 3eaefd54-4d6f-5d95-95fc-28f46b47f844
+
+	measure 'GMV Share' = DIVIDE ( [GMV], CALCULATE ( [GMV], ALLSELECTED () ) )
+		formatString: 0%
+		displayFolder: 1 Sales
+		lineageTag: 62e6b77e-1ac1-5dd1-a3a3-2af5ace95139
+
+	measure 'Cancelled Orders' = CALCULATE ( COUNTROWS ( Orders ), Orders[order_status] IN { "canceled", "unavailable" } )
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: 8354f013-3e18-503a-bdbe-6811aa4f12e8
+
+	measure 'Cancel Rate' = DIVIDE ( [Cancelled Orders], COUNTROWS ( Orders ) )
+		formatString: 0.0%
+		displayFolder: 1 Sales
+		lineageTag: 630f02d4-b46f-5726-90c9-df548b5dfdd0
+
+	measure 'Payments vs GMV Gap' = CALCULATE ( SUM ( Payments[payment_value] ), Orders[is_valid] = TRUE () ) - [GMV]
+		formatString: #,0
+		displayFolder: 1 Sales
+		lineageTag: a2d9a7e3-2e62-5363-a044-dc5fc6f291c3
+
+	measure 'Customer Count' = CALCULATE ( DISTINCTCOUNT ( Orders[customer_unique_id] ), Orders[is_valid] = TRUE () )
+		formatString: #,0
+		displayFolder: 2 Customers
+		lineageTag: 8496c731-7278-5eeb-a16d-4a569b2d1383
+
+	measure 'New Customers' = CALCULATE ( DISTINCTCOUNT ( Orders[customer_unique_id] ), Orders[is_valid] = TRUE (), Orders[order_seq] = 1 )
+		formatString: #,0
+		displayFolder: 2 Customers
+		lineageTag: 7e28da32-14ae-564b-8998-91500b9f5bd7
+
+	measure 'Returning Customers' = [Customer Count] - [New Customers]
+		formatString: #,0
+		displayFolder: 2 Customers
+		lineageTag: baaa9c22-9ee5-5087-a9bd-dbf53be13823
+
+	measure 'Repeat Orders' = CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE (), Orders[order_seq] > 1 )
+		formatString: #,0
+		displayFolder: 2 Customers
+		lineageTag: 36ebbee3-74b7-5fbd-b2e3-a1a42a752c87
+
+	measure 'Repeat Order Share' = DIVIDE ( [Repeat Orders], [Order Count] )
+		formatString: 0.0%
+		displayFolder: 2 Customers
+		lineageTag: 9f9e0cca-5779-54f1-a4bb-793605a5458e
+
+	measure 'Repeat Customer Rate' = DIVIDE ( COUNTROWS ( FILTER ( VALUES ( Orders[customer_unique_id] ), CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE () ) >= 2 ) ), [Customer Count] )
+		formatString: 0.0%
+		displayFolder: 2 Customers
+		lineageTag: 363712ab-70c7-5c9e-b86c-ef7bcc2f08ec
+
+	measure 'Cohort Retention' = DIVIDE ( SUM ( 'Cohort Retention'[active_customers] ), SUM ( 'Cohort Retention'[customers] ) )
+		formatString: 0.00%
+		displayFolder: 2 Customers
+		lineageTag: 8d93bf32-1389-5d99-8a57-37d941e2c74d
+
+	measure 'Segment Customer Share' = DIVIDE ( SUM ( 'RFM Segments'[customers] ), CALCULATE ( SUM ( 'RFM Segments'[customers] ), ALL ( 'RFM Segments' ) ) )
+		formatString: 0%
+		displayFolder: 2 Customers
+		lineageTag: 8fd5a70e-f28d-56dc-9997-ab50892659eb
+
+	measure 'Segment GMV Share' = DIVIDE ( SUM ( 'RFM Segments'[gmv] ), CALCULATE ( SUM ( 'RFM Segments'[gmv] ), ALL ( 'RFM Segments' ) ) )
+		formatString: 0%
+		displayFolder: 2 Customers
+		lineageTag: e7857850-3bbd-556f-ba16-1a355e7918f9
+
+	measure 'Delivered Orders' = CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE (), Orders[order_status] = "delivered", NOT ISBLANK ( Orders[delivered_date] ) )
+		formatString: #,0
+		displayFolder: 3 Delivery
+		lineageTag: c23ec490-237e-5275-a8ad-25527559b09b
+
+	measure 'Late Orders' = CALCULATE ( [Delivered Orders], Orders[delay_days] > 0 )
+		formatString: #,0
+		displayFolder: 3 Delivery
+		lineageTag: 2aba407b-99a8-5434-918a-e14794df1e5e
+
+	measure 'Late Rate' = DIVIDE ( [Late Orders], [Delivered Orders] )
+		formatString: 0.0%
+		displayFolder: 3 Delivery
+		lineageTag: 71958b80-b4dc-51a9-a73f-5f3a8bb408fa
+
+	measure 'Avg Delivery Days' = CALCULATE ( AVERAGE ( Orders[delivery_days] ), Orders[is_valid] = TRUE () )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: bc6a8378-c34b-5a1a-bb5c-e26ce4a43b63
+
+	measure 'Avg Review' = CALCULATE ( AVERAGE ( Orders[review_score] ), Orders[is_valid] = TRUE () )
+		formatString: 0.00
+		displayFolder: 3 Delivery
+		lineageTag: 27abbe35-024c-5db4-9d9c-ffb279e42000
+
+	measure 'Avg Review On Time' = CALCULATE ( [Avg Review], Orders[order_status] = "delivered", Orders[delay_days] <= 0 )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: 174ceca9-20f0-5658-828a-cbab739dab6c
+
+	measure 'Avg Review Late' = CALCULATE ( [Avg Review], Orders[order_status] = "delivered", Orders[delay_days] > 0 )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: 5c625692-181c-54b2-9629-be0cc741bf5a
+
+	measure 'Share 1-2 Stars' = DIVIDE ( CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE (), Orders[review_score] <= 2, NOT ISBLANK ( Orders[review_score] ) ), CALCULATE ( COUNTROWS ( Orders ), Orders[is_valid] = TRUE (), NOT ISBLANK ( Orders[review_score] ) ) )
+		formatString: 0%
+		displayFolder: 3 Delivery
+		lineageTag: 1ac14e1c-71f7-5c1c-a102-25608abe6aea
+
+	measure 'Share 1-2 Stars Late' = CALCULATE ( [Share 1-2 Stars], Orders[order_status] = "delivered", Orders[delay_days] > 0 )
+		formatString: 0%
+		displayFolder: 3 Delivery
+		lineageTag: d80df1a2-349a-53c4-a87e-7d1957ab9ab6
+
+	measure 'Bucket Avg Review' = AVERAGE ( 'Delay Buckets'[avg_review] )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: a94698b9-96aa-532f-a137-b2afd25e293b
+
+	measure 'Bucket Share 1-2 Stars' = AVERAGE ( 'Delay Buckets'[share_1_2_stars] )
+		formatString: 0%
+		displayFolder: 3 Delivery
+		lineageTag: e2666972-8219-526a-8bd0-4bf1f4c04dc4
+
+	measure 'Bucket Avg Review (on time)' = CALCULATE ( [Bucket Avg Review], 'Delay Buckets'[is_late] = FALSE () )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: db5301a3-989c-5223-beee-a5fd76680d2a
+
+	measure 'Bucket Avg Review (late)' = CALCULATE ( [Bucket Avg Review], 'Delay Buckets'[is_late] = TRUE () )
+		formatString: 0.0
+		displayFolder: 3 Delivery
+		lineageTag: c31bc1ad-ecd2-5b49-a254-5886bfb60bcd
+
+	measure 'Bucket Share 1-2 Stars (on time)' = CALCULATE ( [Bucket Share 1-2 Stars], 'Delay Buckets'[is_late] = FALSE () )
+		formatString: 0%
+		displayFolder: 3 Delivery
+		lineageTag: 714f4549-d43c-536a-846d-c341b05cd67b
+
+	measure 'Bucket Share 1-2 Stars (late)' = CALCULATE ( [Bucket Share 1-2 Stars], 'Delay Buckets'[is_late] = TRUE () )
+		formatString: 0%
+		displayFolder: 3 Delivery
+		lineageTag: 76ee5f47-e374-5402-9397-f4503d754154
+
+	measure 'Active Sellers' = CALCULATE ( DISTINCTCOUNT ( OrderItems[seller_id] ), Orders[is_valid] = TRUE () )
+		formatString: #,0
+		displayFolder: 4 Sellers
+		lineageTag: 5fce656f-91dc-5140-a92a-3ed007927f89
+
+	measure 'Seller GMV' = SUM ( Sellers[gmv] )
+		formatString: #,0
+		displayFolder: 4 Sellers
+		lineageTag: d391ddb8-3048-50e6-bc6e-473455da0e60
+
+	measure 'Seller Avg Review' = AVERAGE ( Sellers[avg_review] )
+		formatString: 0.00
+		displayFolder: 4 Sellers
+		lineageTag: 1980ec6d-7df8-5672-965e-db9659da830a
+
+	measure 'Cumulative GMV Share' = MAX ( Sellers[cum_gmv_share] )
+		formatString: 0%
+		displayFolder: 4 Sellers
+		lineageTag: 6aa1e168-ab39-5171-ae62-89c7e6e4f90a
+
+	measure 'Sellers Making 80% of GMV' = DIVIDE ( CALCULATE ( COUNTROWS ( Sellers ), Sellers[cum_gmv_share] < 0.8, NOT ISBLANK ( Sellers[cum_gmv_share] ) ) + 1, CALCULATE ( COUNTROWS ( Sellers ), NOT ISBLANK ( Sellers[gmv] ) ) )
+		formatString: 0%
+		displayFolder: 4 Sellers
+		lineageTag: 7cbe1bbd-3686-5d8a-b289-618309908735
+
+	measure 'Fix-first Sellers' = CALCULATE ( COUNTROWS ( Sellers ), Sellers[quadrant] = "Big & poor rating: fix first" )
+		formatString: #,0
+		displayFolder: 4 Sellers
+		lineageTag: 8c5e1eed-90c2-568c-abe6-c259dbb63803
+
+	measure 'Fix-first GMV Share' = DIVIDE ( CALCULATE ( SUM ( Sellers[gmv] ), Sellers[quadrant] = "Big & poor rating: fix first" ), CALCULATE ( SUM ( Sellers[gmv] ), ALL ( Sellers ) ) )
+		formatString: 0.0%
+		displayFolder: 4 Sellers
+		lineageTag: 72cad3ba-e182-5be5-88e3-fc16a007e897
+
+	measure 'Avg Installments' = CALCULATE ( AVERAGE ( Orders[card_installments] ), Orders[is_valid] = TRUE (), Orders[card_installments] >= 1 )
+		formatString: 0.0
+		displayFolder: 5 Basket
+		lineageTag: e52b2d8a-bd2e-54a0-8a4c-ae435b31cfef
+
+	measure 'Installments by Value Band' = AVERAGE ( Installments[avg_installments] )
+		formatString: 0.0
+		displayFolder: 5 Basket
+		lineageTag: 4c589ad5-30a4-5f2b-b34b-b5393486b471
+
+	measure 'Category Repurchase Rate' = AVERAGE ( 'Category Repurchase'[repurchase_rate] )
+		formatString: 0.0%
+		displayFolder: 5 Basket
+		lineageTag: 8a814b59-adec-5ae5-b8cc-04e706831de7
+
+	measure 'Weekly Orders' = SUM ( 'Forecast Weekly'[actual] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: dc6e8392-f9d6-5293-a715-c8f5f79b8bef
+
+	measure 'Hold-out Prediction' = SUM ( 'Forecast Weekly'[holdout_pred] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: 8dcb5d0a-0c2f-5e41-8caa-8abb844bf6c7
+
+	measure 'Forecast Orders' = SUM ( 'Forecast Weekly'[forecast] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: fa3ebe7f-a7ab-585e-9ddf-b10ccc1f5daf
+
+	measure 'Forecast with Black Friday' = SUM ( 'Forecast Weekly'[forecast_bf] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: 5ddd55aa-871f-5dfb-9784-4ed273f69254
+
+	measure 'Forecast Low (80%)' = SUM ( 'Forecast Weekly'[low] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: 86f3ae45-b302-557e-8aca-da9e63094c7e
+
+	measure 'Forecast High (80%)' = SUM ( 'Forecast Weekly'[high] )
+		formatString: #,0
+		displayFolder: 6 Forecast
+		lineageTag: d41d7c48-50a8-5c9d-991d-0f929e820650
+
+	column _
+		dataType: string
+		isHidden
+		lineageTag: a3c6bee1-1573-5ef4-a632-a94668ab4f38
+		summarizeBy: none
+		sourceColumn: _
+
+	partition _Measures = m
+		mode: import
+		source = #table(type table [_ = text], {})
+

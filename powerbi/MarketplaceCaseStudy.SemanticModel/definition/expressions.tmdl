@@ -1,0 +1,5 @@
+expression DataFolder = "C:\case-study-market\data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 1ea2fed9-f996-57e3-bcb3-c5336c2dda7e
+
+	annotation PBI_ResultType = Text
+

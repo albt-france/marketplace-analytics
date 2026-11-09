@@ -1,0 +1,69 @@
+table 'Delay Buckets'
+	lineageTag: 028f9d90-6ec5-5da5-8664-b2f3d325ab55
+
+	column bucket_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fe517689-a26c-526b-baeb-bacc03cf147a
+		summarizeBy: none
+		sourceColumn: bucket_order
+
+	column delay_bucket
+		dataType: string
+		lineageTag: 1583797a-2f4c-5f45-b509-e4653f49134d
+		summarizeBy: none
+		sourceColumn: delay_bucket
+		sortByColumn: bucket_order
+
+	column is_late
+		dataType: boolean
+		lineageTag: 805c3cdd-3b04-52b2-8a74-7dfd8ed88c77
+		summarizeBy: none
+		sourceColumn: is_late
+
+	column orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 0217f710-bf26-5bb9-924d-04d5e19938cb
+		summarizeBy: none
+		sourceColumn: orders
+
+	column share_of_orders
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 4f7bd712-9a8b-5c11-beff-d049c7200f3b
+		summarizeBy: none
+		sourceColumn: share_of_orders
+
+	column avg_review
+		dataType: double
+		formatString: 0.00
+		lineageTag: 60cda07b-ac10-5cfb-9bee-bc910c1589dd
+		summarizeBy: none
+		sourceColumn: avg_review
+
+	column share_1_2_stars
+		dataType: double
+		formatString: 0%
+		lineageTag: d0825151-0233-5ad3-9090-93f23569852e
+		summarizeBy: none
+		sourceColumn: share_1_2_stars
+
+	column share_5_stars
+		dataType: double
+		formatString: 0%
+		lineageTag: 64bf1b68-4c27-5278-9fcd-3b2c1adda86f
+		summarizeBy: none
+		sourceColumn: share_5_stars
+
+	partition 'Delay Buckets' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\03_delivery_vs_review.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"bucket_order", Int64.Type}, {"delay_bucket", type text}, {"is_late", type logical}, {"orders", Int64.Type}, {"share_of_orders", type number}, {"avg_review", type number}, {"share_1_2_stars", type number}, {"share_5_stars", type number}}, "en-US")
+				in
+					Typed
+

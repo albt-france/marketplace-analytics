@@ -1,0 +1,8 @@
+variable,model,odds_ratio,ci_low,ci_high,p_value,ci_txt,p_txt
+Late first order,A: late + controls,0.83564,0.61952,1.12716,0.2396,0.62 to 1.13,0.240
+Order value (log),A: late + controls,0.98594,0.91088,1.06718,0.72589,0.91 to 1.07,0.726
+Lives in São Paulo state,A: late + controls,1.19214,1.04865,1.35526,0.00723,1.05 to 1.36,0.007
+Late first order,B: A + review score,0.96512,0.70188,1.32708,0.82703,0.70 to 1.33,0.827
+Review score (+1 star),B: A + review score,1.06269,1.00397,1.12484,0.03602,1.00 to 1.12,0.036
+Order value (log),B: A + review score,0.99118,0.91548,1.07314,0.82701,0.92 to 1.07,0.827
+Lives in São Paulo state,B: A + review score,1.18476,1.04178,1.34736,0.00977,1.04 to 1.35,0.010

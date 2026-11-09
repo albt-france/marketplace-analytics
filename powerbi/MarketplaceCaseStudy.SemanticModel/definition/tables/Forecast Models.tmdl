@@ -1,0 +1,33 @@
+table 'Forecast Models'
+	lineageTag: 6941e49d-aa25-5795-83ec-841d4d6abc6a
+
+	column model
+		dataType: string
+		lineageTag: 61e27ece-55d2-5550-9487-36171a9f6437
+		summarizeBy: none
+		sourceColumn: model
+
+	column mae
+		dataType: double
+		formatString: #,0
+		lineageTag: 3fbb06c3-46b4-5e51-b32c-60a5c367edd7
+		summarizeBy: none
+		sourceColumn: mae
+
+	column mape
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 3c869735-d76b-5bac-b5ea-1e49b2158fd9
+		summarizeBy: none
+		sourceColumn: mape
+
+	partition 'Forecast Models' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\forecast_models.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"model", type text}, {"mae", type number}, {"mape", type number}}, "en-US")
+				in
+					Typed
+

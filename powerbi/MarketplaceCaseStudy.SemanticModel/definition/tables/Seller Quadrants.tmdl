@@ -1,0 +1,61 @@
+table 'Seller Quadrants'
+	lineageTag: d3577392-d9fd-5da6-9f77-fb66f4cab3c9
+
+	column quadrant
+		dataType: string
+		lineageTag: ed78ab68-f697-56cc-91f3-46b82cdba4d7
+		summarizeBy: none
+		sourceColumn: quadrant
+
+	column sellers
+		dataType: int64
+		formatString: #,0
+		lineageTag: ba151238-7d7b-5430-9b06-360d0204c4b8
+		summarizeBy: none
+		sourceColumn: sellers
+
+	column gmv
+		dataType: double
+		formatString: #,0
+		lineageTag: 5a3e0fa8-dadf-5e5e-a229-a4f6e6f7cb6b
+		summarizeBy: none
+		sourceColumn: gmv
+
+	column orders
+		dataType: int64
+		formatString: #,0
+		lineageTag: a6a7e570-f03e-57e6-ab3f-2805772f0cfa
+		summarizeBy: none
+		sourceColumn: orders
+
+	column avg_review
+		dataType: double
+		formatString: 0.00
+		lineageTag: aa50aa0e-b820-51a6-a1c0-72f88a262eff
+		summarizeBy: none
+		sourceColumn: avg_review
+
+	column late_rate
+		dataType: double
+		formatString: 0.0%
+		lineageTag: 200bc58e-41b1-5381-89d0-d50de8d53c24
+		summarizeBy: none
+		sourceColumn: late_rate
+
+	column gmv_share
+		dataType: double
+		formatString: 0.0%
+		lineageTag: dadd0908-8f26-54c2-9187-baedf8edf9af
+		summarizeBy: none
+		sourceColumn: gmv_share
+
+	partition 'Seller Quadrants' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\seller_quadrants.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"quadrant", type text}, {"sellers", Int64.Type}, {"gmv", type number}, {"orders", Int64.Type}, {"avg_review", type number}, {"late_rate", type number}, {"gmv_share", type number}}, "en-US")
+				in
+					Typed
+

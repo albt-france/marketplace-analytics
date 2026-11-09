@@ -1,0 +1,62 @@
+table OrderItems
+	lineageTag: 10d9f73f-3909-57d4-8398-7cd525c2cf02
+
+	column order_id
+		dataType: string
+		lineageTag: fa33acfd-b4d8-5a2d-80ef-262d14b4248e
+		summarizeBy: none
+		sourceColumn: order_id
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 74e15ba4-d748-5ac6-9d91-ba97ef310941
+		summarizeBy: none
+		sourceColumn: order_item_id
+
+	column product_id
+		dataType: string
+		lineageTag: 4197ec1a-b0c1-50ca-bae3-a0039e30428e
+		summarizeBy: none
+		sourceColumn: product_id
+
+	column seller_id
+		dataType: string
+		lineageTag: d041aa5e-cde8-596c-934d-f75d4e023953
+		summarizeBy: none
+		sourceColumn: seller_id
+
+	column price
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0c677d2f-b5ee-5430-a047-66eca764569f
+		summarizeBy: none
+		sourceColumn: price
+
+	column freight
+		dataType: double
+		formatString: #,0.00
+		lineageTag: a5c1523d-3cd7-5cd9-8ae9-b5032dff160a
+		summarizeBy: none
+		sourceColumn: freight
+
+	column gmv
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 673f064d-2d6f-56b1-b184-a828c6176a74
+		summarizeBy: none
+		sourceColumn: gmv
+
+	partition OrderItems = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\order_items.parquet")),
+					Selected = Table.SelectColumns(Source, {"order_id", "order_item_id", "product_id", "seller_id", "price", "freight", "gmv"}),
+					OrderKeys = Table.RenameColumns(Table.SelectColumns(Orders, {"order_id"}), {{"order_id", "k"}}),
+					Joined = Table.Join(Selected, "order_id", OrderKeys, "k", JoinKind.Inner),
+					Kept = Table.RemoveColumns(Joined, {"k"}),
+					Typed = Table.TransformColumnTypes(Kept, {{"order_id", type text}, {"order_item_id", Int64.Type}, {"product_id", type text}, {"seller_id", type text}, {"price", type number}, {"freight", type number}, {"gmv", type number}})
+				in
+					Typed
+

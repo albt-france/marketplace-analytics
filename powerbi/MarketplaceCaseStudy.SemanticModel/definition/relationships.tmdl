@@ -1,0 +1,32 @@
+relationship rel_01
+	fromColumn: Orders.customer_unique_id
+	toColumn: Customers.customer_unique_id
+
+relationship rel_02
+	fromColumn: Orders.purchase_date
+	toColumn: Date.Date
+
+relationship rel_03
+	fromColumn: OrderItems.order_id
+	toColumn: Orders.order_id
+
+relationship rel_04
+	fromColumn: OrderItems.product_id
+	toColumn: Products.product_id
+
+relationship rel_05
+	fromColumn: OrderItems.seller_id
+	toColumn: Sellers.seller_id
+
+relationship rel_06
+	fromColumn: Payments.order_id
+	toColumn: Orders.order_id
+
+relationship rel_07
+	fromColumn: Reviews.order_id
+	toColumn: Orders.order_id
+
+relationship rel_08
+	fromColumn: Customers.state
+	toColumn: Geo.state
+

@@ -1,0 +1,65 @@
+table 'Repurchase Model'
+	lineageTag: 637847c3-90cd-560b-9c7c-7d3be9b59c6e
+
+	column variable
+		dataType: string
+		lineageTag: 3fb24500-1376-527a-9c92-9ad1b986983d
+		summarizeBy: none
+		sourceColumn: variable
+
+	column model
+		dataType: string
+		lineageTag: e8cd765a-1e0c-548d-9166-770a0188239d
+		summarizeBy: none
+		sourceColumn: model
+
+	column odds_ratio
+		dataType: double
+		formatString: 0.00
+		lineageTag: e85ce985-cf26-5b7e-964d-145a7285eb46
+		summarizeBy: none
+		sourceColumn: odds_ratio
+
+	column ci_low
+		dataType: double
+		formatString: 0.00
+		lineageTag: b024b2c0-a23c-5a32-b428-a06a014a60cf
+		summarizeBy: none
+		sourceColumn: ci_low
+
+	column ci_high
+		dataType: double
+		formatString: 0.00
+		lineageTag: 9d7189d1-8b3a-5c34-b820-082c71b84088
+		summarizeBy: none
+		sourceColumn: ci_high
+
+	column p_value
+		dataType: double
+		formatString: 0.000
+		lineageTag: 996498b4-9a8f-5908-8e8a-ca9a0c8bbc65
+		summarizeBy: none
+		sourceColumn: p_value
+
+	column ci_txt
+		dataType: string
+		lineageTag: fd881756-04cc-552b-8a06-005b65377fd0
+		summarizeBy: none
+		sourceColumn: ci_txt
+
+	column p_txt
+		dataType: string
+		lineageTag: 2f70a98f-0316-5123-85a3-9b93c2733562
+		summarizeBy: none
+		sourceColumn: p_txt
+
+	partition 'Repurchase Model' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\repurchase_logit.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"variable", type text}, {"model", type text}, {"odds_ratio", type number}, {"ci_low", type number}, {"ci_high", type number}, {"p_value", type number}, {"ci_txt", type text}, {"p_txt", type text}}, "en-US")
+				in
+					Typed
+

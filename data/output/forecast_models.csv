@@ -1,0 +1,5 @@
+model,mae,mape
+Naive (last week),280.0,0.21272
+"Holt, damped trend",281.12414,0.21794
+Mean of last 8 weeks,312.23958,0.2424
+Linear trend,484.04435,0.37617

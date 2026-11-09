@@ -1,0 +1,27 @@
+check,value
+orders (rows),99441
+orders (distinct order_id),99441
+"customer_id (distinct, one per order)",99441
+"customer_unique_id (distinct, real customers)",96096
+sellers,3095
+products,32951
+order items,112650
+payments (rows),103886
+reviews (rows),99224
+orders cancelled or unavailable,1234
+orders without any item,775
+delivered orders without delivery date,8
+orders with more than one review,547
+review_id used for more than one order,789
+products without category,610
+categories without English translation,2
+orders before 2017-01-01 (thin start),329
+"orders from 2018-08-01 (tapering end, excluded)",6532
+first purchase,2016-09-04 21:15:19
+last purchase,2018-10-17 17:30:18
+"valid orders (not cancelled/unavailable, with items)",98199
+valid orders in Jan 2017 - Jul 2018 window,91484
+customers with at least one valid order,94983
+"GMV of valid orders, BRL (price + freight)",15735527.0
+valid orders where |paid - GMV| > 1 BRL,247
+valid orders with no payment row,1

@@ -1,0 +1,201 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "deliveryTests",
+  "position": {
+    "x": 32,
+    "y": 684,
+    "z": 10000,
+    "height": 344,
+    "width": 916,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "metric"
+                }
+              },
+              "queryRef": "Delivery Stats.metric",
+              "nativeQueryRef": "metric",
+              "displayName": "Metric"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "on_time_txt"
+                }
+              },
+              "queryRef": "Delivery Stats.on_time_txt",
+              "nativeQueryRef": "on_time_txt",
+              "displayName": "On time"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "late_txt"
+                }
+              },
+              "queryRef": "Delivery Stats.late_txt",
+              "nativeQueryRef": "late_txt",
+              "displayName": "Late"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "gap_txt"
+                }
+              },
+              "queryRef": "Delivery Stats.gap_txt",
+              "nativeQueryRef": "gap_txt",
+              "displayName": "Gap"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "ci_txt"
+                }
+              },
+              "queryRef": "Delivery Stats.ci_txt",
+              "nativeQueryRef": "ci_txt",
+              "displayName": "Bootstrap 95% CI"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Delivery Stats"
+                    }
+                  },
+                  "Property": "p_txt"
+                }
+              },
+              "queryRef": "Delivery Stats.p_txt",
+              "nativeQueryRef": "p_txt",
+              "displayName": "p-value"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#52514E'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Late vs on-time orders: the gap is large and significant'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

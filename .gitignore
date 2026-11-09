@@ -1,0 +1,15 @@
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# raw Olist CSVs: download them from Kaggle (see data/SOURCES.md)
+data/raw/
+
+# Power BI local files
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+**/.pbi/editorSettings.json
+**/TMDLScripts/

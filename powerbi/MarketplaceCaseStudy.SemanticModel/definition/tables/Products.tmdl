@@ -1,0 +1,40 @@
+table Products
+	lineageTag: 23c02527-e471-5eec-9078-c48948fc88f4
+
+	column product_id
+		dataType: string
+		isKey
+		lineageTag: 3aff7bdf-ac23-575c-bb94-c52e5102c63b
+		summarizeBy: none
+		sourceColumn: product_id
+
+	column category
+		dataType: string
+		lineageTag: 759c5622-8fb9-5ca6-84d4-63a0e9da2b57
+		summarizeBy: none
+		sourceColumn: category
+
+	column weight_g
+		dataType: int64
+		formatString: 0
+		lineageTag: e0434ace-8f43-54e9-970a-80efce21df6f
+		summarizeBy: none
+		sourceColumn: weight_g
+
+	column photos_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e783d91-e17d-5abd-9cc1-3e723696890b
+		summarizeBy: none
+		sourceColumn: photos_qty
+
+	partition Products = m
+		mode: import
+		source =
+				let
+					Source = Parquet.Document(File.Contents(DataFolder & "clean\products.parquet")),
+					Selected = Table.SelectColumns(Source, {"product_id", "category", "weight_g", "photos_qty"}),
+					Typed = Table.TransformColumnTypes(Selected, {{"product_id", type text}, {"category", type text}, {"weight_g", Int64.Type}, {"photos_qty", Int64.Type}})
+				in
+					Typed
+

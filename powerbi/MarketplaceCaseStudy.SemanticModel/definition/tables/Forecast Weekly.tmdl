@@ -1,0 +1,70 @@
+table 'Forecast Weekly'
+	lineageTag: 51d66a06-2a51-5956-b28e-feab8e249164
+
+	column week
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 400302fb-395f-512a-9998-8d731efe4e8a
+		summarizeBy: none
+		sourceColumn: week
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column actual
+		dataType: double
+		formatString: #,0
+		lineageTag: 4790479d-df9d-53a0-baad-c58c13412f54
+		summarizeBy: none
+		sourceColumn: actual
+
+	column split
+		dataType: string
+		lineageTag: 1a4db34f-2d52-53c6-9bde-5ad7531cec5f
+		summarizeBy: none
+		sourceColumn: split
+
+	column forecast
+		dataType: double
+		formatString: #,0
+		lineageTag: 4dd8f6f5-a0c5-5093-a414-5290b2fd7a96
+		summarizeBy: none
+		sourceColumn: forecast
+
+	column forecast_bf
+		dataType: double
+		formatString: #,0
+		lineageTag: 0e1c80b4-63d4-52d3-9da3-2d93c72df48f
+		summarizeBy: none
+		sourceColumn: forecast_bf
+
+	column low
+		dataType: double
+		formatString: #,0
+		lineageTag: 7aab84d1-64f4-5c0b-86c1-931210f6d8b8
+		summarizeBy: none
+		sourceColumn: low
+
+	column high
+		dataType: double
+		formatString: #,0
+		lineageTag: 507258cd-9d76-58b5-8a48-fe9995bd1ccd
+		summarizeBy: none
+		sourceColumn: high
+
+	column holdout_pred
+		dataType: double
+		formatString: #,0
+		lineageTag: f903ed4b-9f75-53eb-9dcf-12d06d360daf
+		summarizeBy: none
+		sourceColumn: holdout_pred
+
+	partition 'Forecast Weekly' = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(DataFolder & "output\forecast_weekly.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"week", type date}, {"actual", type number}, {"split", type text}, {"forecast", type number}, {"forecast_bf", type number}, {"low", type number}, {"high", type number}, {"holdout_pred", type number}}, "en-US")
+				in
+					Typed
+
